@@ -377,7 +377,7 @@
             }
             $row[] = implode(' ', $buttons);
             $row[] = $lastcolumn;
-            $row[] = "<a href=\"user/pdf.php?id=$user->id\" ><img src='../theme/image.php/bcu/core/1492500439/t/download' alt='Download' class='iconsmall'></a>";
+            $row[] = "<a href=\"../user/pdf.php?id=$user->id\" ><img src='../theme/image.php/bcu/core/1492500439/t/download' alt='Download' class='iconsmall'></a>";
             $table->data[] = $row;
         }
     }

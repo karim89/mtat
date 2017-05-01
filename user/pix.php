@@ -39,8 +39,10 @@ if (count($args) == 2) {
     $userid = (integer)$args[0];
     if ($args[1] === 'f1.jpg') {
         $image = 'f1';
-    } else {
+    }elseif ($args[1] === 'f2.jpg') {
         $image = 'f2';
+    } else {
+        $image = 'f3';
     }
     if ($usercontext = context_user::instance($userid, IGNORE_MISSING)) {
         $url = moodle_url::make_pluginfile_url($usercontext->id, 'user', 'icon', null, '/', $image);
