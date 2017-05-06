@@ -205,6 +205,9 @@ if ($user->description && !isset($hiddenfields['description'])) {
     if (!empty($CFG->profilesforenrolledusersonly) && !$currentuser &&
         !$DB->record_exists('role_assignments', array('userid' => $user->id))) {
         echo get_string('profilenotshown', 'moodle');
+        $user->description = file_rewrite_pluginfile_urls($user->description, 'pluginfile.php', $usercontext->id, 'user',
+                                                          'profile', null);
+        echo format_text($user->description, $user->descriptionformat);
     } else {
         $user->description = file_rewrite_pluginfile_urls($user->description, 'pluginfile.php', $usercontext->id, 'user',
                                                           'profile', null);
@@ -212,6 +215,10 @@ if ($user->description && !isset($hiddenfields['description'])) {
     }
     echo '</div>';
 }
+
+$link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+echo "<table width='100%'><tr><td><img src='".$link."/pluginfile.php/".$usercontext->id."/user/icon/bcu/f1' ></td><td><h2>".fullname($user, true)."</h2></td><td><a href=\"pdf.php?id=$user->id\" class='btn btn-sm pull-right'>Download Profile </a></td></tr></table>";
+//echo "<a href=\"pdf.php?id=$user->id\" class='btn btn-sm pull-right'>Download Profile </a>";
 
 echo $OUTPUT->custom_block_region('content');
 

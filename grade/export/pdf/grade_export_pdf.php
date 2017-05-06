@@ -33,13 +33,17 @@ class grade_export_pdf extends grade_export {
         $export_tracking = $this->track_exports();
 
         $strgrades = get_string('grades');
-		
+		$link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
 		$doc = new pdf;
 		$doc->setPrintHeader(false);
 		$doc->setPrintFooter(false);
 		$doc->AddPage('L', 'A4');
 		$doc->SetFont('times', '', 9, '', 'false');
-		$tbl = '<table border="1">';
+		$tbl = '<table><tr><td width="8%"><img src="'.$link.'/theme/bcu/pix/2xlogo.png" width="30"></td>
+                        <td><br><h1>Maktab Turus Angkatan Tentera</h1></td>
+                    </tr>
+                <table>';
+		$tbl .= '<hr><p>&nbsp;</p> <table border="1">';
 		$tbl .= '<tr>';
 		$tbl .= '<th>'.get_string("firstname").'</th><th>'.get_string("lastname").'</th><th>'.get_string("idnumber").'</th><th>'.get_string("institution").'</th><th>'.get_string("department").'</th><th>'.get_string("email").'</th>';
 		foreach ($this->columns as $grade_item)
@@ -92,7 +96,7 @@ class grade_export_pdf extends grade_export {
 		}
 		$tbl .= '</table>';
 
-		$doc->writeHTML($tbl, true, false, false, false, '');
+		$doc->writeHTML($tbl, true, false, true, false, '');
 
 		$shortname = format_string($this->course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $this->course->id)));
         $downloadfilename = clean_filename("$shortname $strgrades.pdf");
