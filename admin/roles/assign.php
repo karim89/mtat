@@ -301,15 +301,22 @@ if ($roleid) {
         $table->headspan = array(1, 1, 2);
         $table->colclasses[] = 'leftalign roleholder';
     }
-
+    
     foreach ($assignableroles as $roleid => $rolename) {
         $description = format_string($DB->get_field('role', 'description', array('id'=>$roleid)));
         $assignurl = new moodle_url($PAGE->url, array('roleid'=>$roleid));
         if ($returnto !== null) {
             $assignurl->param('return', $returnto);
         }
-        $row = array('<a href="'.$assignurl.'">'.$rolename.'</a>',
-                $description, $assigncounts[$roleid]);
+        $conn = new mysqli($CFG->dbhost, $CFG->dbuser, $CFG->dbpass, $CFG->dbname);
+
+        $sql = "SELECT * FROM  mdl_role_assignments where userid = ".$USER->id." and contextid = ".$_GET['contextid']." and roleid in (3)  ";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0 or $USER->id == 2) {
+            $row = array('<a href="'.$assignurl.'">'.$rolename.'</a>', $description, $assigncounts[$roleid]);
+        } else {
+            $row = array($rolename, $description, $assigncounts[$roleid]);
+        }
         if ($showroleholders) {
             $row[] = $roleholdernames[$roleid];
         }
